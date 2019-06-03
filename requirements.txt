@@ -1,0 +1,14 @@
+django
+gunicorn
+django-heroku
+Flask
+numpy
+pandas
+scikit-learn
+requests
+pytz
+spotipy
+scipy
+six
+tqdm
+urllib3
