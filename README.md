@@ -1,4 +1,3 @@
-# musicx
 ![Logo](https://sbu-musicx.herokuapp.com/static/musicx.png)
 
 # CSE-564 Visualization
