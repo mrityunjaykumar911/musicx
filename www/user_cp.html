@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='dist/bootstrap-tagsinput.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/themes/github.css">
+<link rel="icon" type="image/png" sizes="192x192"  href="{{url_for('static', filename='favicon.ico')}}">
+  <script>
+function logout()/*function to check userid & password*/
+{
+  window.open("index.html", "_top");
+}
+</script>
+<style>
+    #YmOt {
+      font-size: 85px;
+      font-family: fantasy;
+    }
+    .alert {
+      padding: 20px;
+      background-color: #f44336;
+      color: white;
+    }
+
+    .closebtn {
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .closebtn:hover {
+      color: black;
+    }
+
+    #ViewPlayer{
+      max-width: 100%;
+    }
+
+    .list-group{
+        max-width: 550px;
+        max-height: 330px;
+        margin-bottom: 10px;
+        overflow:scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .list-group-item{
+        background: skyblue;
+    }
+    .col-md-3 {
+      width: 60%;
+    }
+
+    .col-md-9 {
+      width: 40%;
+    }
+
+    circle {
+  stroke-width: 1.5px;
+}
+line {
+  stroke: #999;
+}
+
+
+</style>
+
+</head>
+
+
+<!--<div class="tablist">-->
+<!--<button class="tablink" onclick="logout()">Log Out</button>-->
+<!--</div>-->
+
+<!--<div id="User" class="tabcontent">-->
+  <!--<h3>User</h3>-->
+  <!--<p>Get in touch, or swing by for a cup of coffee.</p>-->
+<!--</div>-->
+
+<div>
+<div style="float:left;">
+<br class="form-group">
+    <div>
+    <img style="zoom: 80%;" src="{{url_for('static', filename='musicx.png')}}" alt="Brand"/>
+    <span id="YmOt" style="margin-left: 15%;">Your mood! Our Tunes!!
+    </span>
+    <div class="col-lg-10" style="margin-left: 25%;">
+      <label class="checkbox-inline">
+        <input type="checkbox" name="radio" checked="checked" id="rdroutine"> Daily routines
+      </label>
+      <label class="checkbox-inline">
+        <input type="checkbox" name="radio" checked="checked" id="remotional"> Emotional
+      </label>
+      <label class="checkbox-inline">
+        <input type="checkbox" name="radio" checked="checked" id="rentertain"> Entertainment
+      </label>
+      <label class="checkbox-inline">
+        <input type="checkbox" name="radio" id="rlmusic"> Live music
+      </label>
+        <label class="checkbox-inline">
+        <input type="checkbox" name="radio" id="rintellec"> Intellectual
+      </label>
+        <label class="checkbox-inline">
+        <input type="checkbox" name="radio" id="rmlisten"> Music listening
+      </label>
+    <label class="checkbox-inline">
+        <input type="checkbox" name="radio" id="ronTheMove"> On the move
+    </label>
+    <label class="checkbox-inline">
+        <input type="checkbox" name="radio" id="rphysical"> Physical
+    </label>
+        </label>
+        <label class="checkbox-inline">
+        <input type="checkbox" name="radio" id="rsocial"> Social
+      </label>
+    </div>
+    <hr />
+    </div>
+</div>
+</br>
+
+<script type="text/javascript" src="{{ url_for('static', filename='dist/jquery.min.js') }}"></script>
+<div class="container">
+  <section id="examples">
+       <div class="example example_markup">
+          <div class="bs-example">
+            <input type="text" id="mytags" value="" data-role="tagsinput" style="width: 100%"/>
+            <hr />
+            <input type="hidden" class="typeahead tt-query" autocomplete="off" spellcheck="false" style="width: 100%">
+
+          </div>
+       </div>
+  </section>
+</div>
+
+<div>
+  <div>
+<div id="merasvg" style="margin-left:20%; float:left">
+</div>
+<div>
+    <div style="float: left; margin-left:4%;">
+    <input class="btn btn-primary" type="submit" value="Recommend" onclick="fill_music_data()">
+    <div class="alert" id="WarningView">
+    </div>
+
+    </br>
+    <p> Songs recommended :</p>
+    <div id="ViewPlayer">
+        <ul class="list-group" id="MusicPlayListView">
+        </ul>
+    </div>
+</br>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="text-align: center">
+<div style="float: left; width: 100%; height:auto;; background-image: "{{url_for('static', filename='back.jpg')}}"; display: inline-block; margin:auto; " id="merasvgreturns">
+</div>
+</div>
+
+<script src="//d3js.org/d3.v4.min.js"></script>
+
+<script>
+function reset_chart(){
+  var svg_ = d3.select("svg");
+  svg_.selectAll("*").remove();
+  d3.select("svg").remove();
+}
+
+function update(dataset) {
+        reset_chart();
+        var diameter = 500;
+        var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+        var bubble = d3.pack(dataset)
+            .size([diameter, diameter])
+            .padding(1.5);
+
+        var svg = d3.select("#merasvg")
+            .append("svg")
+            .attr("width", diameter)
+            .attr("height", diameter)
+            .attr("class", "bubble");
+
+        var nodes = d3.hierarchy(dataset)
+            .sum(function(d) { return d.Count; });
+
+        var node = svg.selectAll(".node")
+            .data(bubble(nodes).descendants())
+            .enter()
+            .filter(function(d){
+                return  !d.children
+            })
+            .append("g")
+            .attr("class", "node")
+            .attr("transform", function(d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+
+        node.append("title")
+            .text(function(d) {
+                return d.Name;
+            });
+
+        node.append("circle")
+            .attr("r", function(d) {
+                return d.r;
+            })
+            .on("click", function(d) {
+              console.log("on click get data" + d.data.Name);
+              var mood_toadd = d.data.Name;
+              var elt = $('#mytags');
+              elt.tagsinput('add', mood_toadd);
+            })
+            .style("fill", function(d,i) {
+                return color(i);
+            })
+            .style("cursor", "cell");
+
+        node.append("text")
+            .attr("dy", ".2em")
+            .style("text-anchor", "middle")
+            .text(function(d) {
+                return d.data.Name.substring(0, d.r / 3);
+            })
+            .on("click", function(d) {
+              console.log("on click get data" + d.data.Name);
+              var mood_toadd = d.data.Name;
+              var elt = $('#mytags');
+              elt.tagsinput('add', mood_toadd);
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", function(d){
+                return d.r/5;
+            })
+            .attr("fill", "white")
+            .style("cursor", "cell");
+
+        node.append("text")
+            .attr("dy", "1.3em")
+            .style("text-anchor", "middle")
+            .attr("font-family",  "Gill Sans", "Gill Sans MT")
+            .attr("font-size", function(d){
+                return d.r/5;
+            })
+            .attr("fill", "white");
+
+        d3.select(self.frameElement)
+            .style("height", diameter + "px");
+}
+</script>
+
+<script>
+
+function get_checked_activity_list() {
+    var returnlist=[];
+    if(document.getElementById("rdroutine").checked){
+        returnlist.push("daily_routines");
+    }
+    if(document.getElementById("remotional").checked){
+        returnlist.push("emotional");
+    }
+    if(document.getElementById("rentertain").checked){
+        returnlist.push("entertainment");
+    }
+    if(document.getElementById("rlmusic").checked){
+        returnlist.push("live_music");
+    }
+    if(document.getElementById("rintellec").checked){
+        returnlist.push("intellectual");
+    }
+    if(document.getElementById("rmlisten").checked){
+        returnlist.push("music_listening");
+    }
+    if(document.getElementById("ronTheMove").checked){
+        returnlist.push("on_the_move");
+    }
+    if(document.getElementById("rphysical").checked){
+        returnlist.push("physical");
+    }
+    if(document.getElementById("rsocial").checked){
+        returnlist.push("social");
+    }
+    return returnlist;
+}
+
+function arrayRemove(arr, value) {
+        return arr.filter(function(ele){
+            return ele != value;
+        });
+}
+
+$('input').on('beforeItemAdd', function(event) {
+    console.log('item added : '+event.item);
+  // event.item: contains the item
+  // event.cancel: set to true to prevent the item getting added
+});
+
+$("#mytags").on('itemAdded', function(event) {
+  console.log('item added : '+event.item);
+});
+
+$("#mytags").on('itemRemoved', function(event) {
+  console.log('item removed : '+event.item);
+});
+
+function disableDivWarn() {
+  var x = document.getElementById("WarningView");
+  x.style.display = "none";
+}
+function enableDivWarn() {
+  $("#WarningView").show();
+}
+
+function make_bounded_force_directed(links_vals,links_nodes) {
+  var width = 1000,
+      height = 1000,
+      radius = 6;
+  var fill = d3.scaleOrdinal(d3.schemeCategory20);
+  var simulation = d3.forceSimulation()
+      .velocityDecay(0.1)
+      .force("x", d3.forceX(width / 2).strength(3))
+      .force("y", d3.forceY(height / 2).strength(3))
+      .force("charge", d3.forceManyBody().strength(-240))
+      .force("link", d3.forceLink().distance(10).strength(1));
+
+  var check = d3.select("#merasvgreturns").select("svg");
+  if(check.empty()){
+  var svg = d3.select("#merasvgreturns")
+              .append("svg")
+              .attr("width", width)
+              .attr("height", height)
+              .attr("class","fdgraph")
+              .style("margin","auto");}
+  else {
+    var svg = d3.select("#merasvgreturns").select("svg");
+    svg.selectAll("*").remove();
+  }
+  var link = svg.selectAll("line")
+                .data(links_vals)
+                .enter().append("line");
+  var node = svg.selectAll("circle")
+                .data(links_nodes)
+                .enter().append("circle")
+                .attr("r", radius - .75)
+                .style("fill", function(d) { return fill(d.group); })
+                .style("stroke", function(d) { return d3.rgb(fill(d.group)).darker(); })
+                .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended))
+                .on("mouseover", handleMouseOver)
+                .on("mouseout", handleMouseOut);
+  simulation.nodes(links_nodes)
+            .on("tick", tick);
+  simulation.force('link')
+            .links(links_vals);
+  function tick() {
+    node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+  }
+  function dragstarted(d) {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+  function dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+  function dragended(d) {
+    if (!d3.event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+  function handleMouseOver(d,i){
+    console.log("mouse over called"+[d.name].length);
+    g1 = svg.append("g")
+           .attr("id", "text");  // Create an id for text so we can select it later for removing on mouseout;
+    g2 = svg.append("g")
+                  .attr("id", "text");  // Create an id for text so we can select it later for removing on mouseout;
+    g1.append('rect')
+        .attr('x', function() { return d.x - 30; } )
+        .attr('y', function() { return d.y - 28; } )
+        .attr('width', 200 )
+        .attr('height', 20)
+        .style('fill', '#FFFFFF');
+    g2.append("text")
+     .attr("x", function() { return d.x - 30; })
+     .attr("y", function() { return d.y - 15; })
+     .attr('stroke', 'black')
+     .attr('stroke-width', 1)
+     .text(function() {
+            return [d.name];  // Value of the text
+          });
+  }
+  function handleMouseOut(d, i) {
+    // console.log("mouse out called");
+    // Select text by id and then remove
+    d3.selectAll("#text").remove();  // Remove text location
+  }
+}
+
+function fill_music_data()
+{
+
+  var plyrView = $("#MusicPlayListView");
+  var elt = $('#mytags');;
+  // empty the player view
+  plyrView.empty();
+  var mood_list_array = elt.val().split(",");;
+  var activity_list_array = get_checked_activity_list();
+
+  if((mood_list_array[0].length == 0) || (activity_list_array.length == 0)) {
+    $('#WarningView').empty();
+    enableDivWarn();
+    $('#WarningView').append('<span class="closebtn" onclick="disableDivWarn();">&times;</span>');
+    $('#WarningView').append("<strong>Warning!</strong> Min One entry in moods and activity both are req.");
+    return;
+  }
+
+  $.ajax({
+          url: "/query/20",
+          type: "POST",
+          contentType: "application/json", // send as JSON
+          data: JSON.stringify({'mood_list': mood_list_array, "activity_list": activity_list_array}),
+
+          complete: function() {
+            //called when complete
+            console.log("complete");
+          },
+
+          success: function(data, textStatus, jQxhr) {
+            //called when successful
+
+            data.result.forEach(function(element) {
+              var artist_name = element.artistname;
+              var track_title = element.tracktitle;
+              console.log(track_title);
+              $("#MusicPlayListView").append('<li class="list-group-item row">\
+                                                <div class="col-md-3">'+track_title+'</div>\
+                                                <div class="col-md-9">'+'Artist :'+artist_name+'</div>\
+                                              </li>');
+              });
+          },
+
+          error: function(jqXhr, textStatus, errorThrown) {
+            //called when there is an error
+            console.log(errorThrown);
+            console.log("error here");
+          },
+        });
+
+        $.ajax({
+                url: "/cquery",
+                type: "POST",
+                contentType: "application/json", // send as JSON
+                data: JSON.stringify({"mood_list" : mood_list_array,"activity_list" : activity_list_array}),
+
+                complete: function() {
+                  //called when complete
+                  console.log("complete");
+                },
+
+                success: function(data, textStatus, jQxhr) {
+                  //called when successful
+                  var links_vals = data.result.links;
+                  var links_nodes = data.result.nodes;
+                  console.log("Query success");
+                  console.log(links_vals);
+                  console.log(links_nodes);
+                  make_bounded_force_directed(links_vals,links_nodes);
+                },
+
+                error: function(jqXhr, textStatus, errorThrown) {
+                  //called when there is an error
+                  console.log(errorThrown);
+                  console.log("error here");
+                },
+              });
+
+}
+
+$(document).ready(function(){
+  var elt = $('#mytags');
+  disableDivWarn();
+
+  elt.tagsinput({
+    typeahead: {
+      source: []
+    }
+  });
+
+  $("#mytags").on('itemAdded', function(event) {
+    console.log('item added : '+event.item);
+    var elt = $('#mytags');
+    var items = elt.val().split(",");
+    var values = get_checked_activity_list();
+    console.log(values);
+
+    if(items.length == 0)
+    {
+      console.log("empty moods");
+      return;
+    }
+
+
+    $.ajax({
+            url: "/get_similar_moods/10",
+            type: "POST",
+            contentType: "application/json", // send as JSON
+            data: JSON.stringify({'moods': items}),
+
+            complete: function() {
+              //called when complete
+              console.log("complete");
+            },
+
+            success: function(data, textStatus, jQxhr) {
+              //called when successful
+              dataset = {"children" : []};
+              var data2 = data.data;
+              data.data.forEach(function(element) {
+                console.log(element);
+                dataset["children"].push({"Name":element[0],
+                                        "Count": element[1]})});
+              console.log(dataset);
+              update(dataset);
+            },
+
+            error: function(jqXhr, textStatus, errorThrown) {
+              //called when there is an error
+              console.log(errorThrown);
+              console.log("error here");
+            },
+          });
+
+  });
+
+  $("#mytags").on('itemRemoved', function(event) {
+    console.log('item removed : '+event.item);
+    var elt = $('#mytags');
+    var items = elt.val().split(",");
+    if(items[0].length == 0){
+        dataset = {"children": [{"Name":"No Input for Mood","Count":1}]};
+        update(dataset);
+    }
+    if(items[0].length == 0)
+    {
+      console.log("empty moods");
+      return;
+    }
+
+    var values = get_checked_activity_list();
+    console.log(values);
+
+
+    $.ajax({
+            url: "/get_similar_moods/10",
+            type: "POST",
+            contentType: "application/json", // send as JSON
+            data: JSON.stringify({'moods': items}),
+
+            complete: function() {
+              //called when complete
+              console.log("complete");
+            },
+
+            success: function(data, textStatus, jQxhr) {
+              //called when successful
+              var data2 = data.data;
+              dataset = {"children" : []};
+              data.data.forEach(function(element) {
+                console.log(element);
+                dataset["children"].push({"Name":element[0],
+                                        "Count": element[1]})});
+              console.log(dataset);
+              update(dataset);
+            },
+
+            error: function(jqXhr, textStatus, errorThrown) {
+              //called when there is an error
+              console.log(errorThrown);
+              console.log("error here");
+            },
+          });
+
+
+
+  });
+});
+
+  window.onload = function(e) {
+                console.log("window loaded");
+                fill_data();
+                dataset = {
+                "children": [{"Name":"Sad","Count":4319},
+                    {"Name":"Happy","Count":4159},
+                    {"Name":"Joy Potatoes","Count":2583},
+                    {"Name":"On the Road","Count":2074},
+                    {"Name":"Sex","Count":1894},
+                    {"Name":"Relax","Count":1809},
+                    {"Name":"Sleep","Count":1713}]
+                };
+                update(dataset);
+            };
+  function fill_data() {
+    var data2;
+    $.get("/get_default_moods", {'data': 'received'}, function(data_infunc){
+      data2 = JSON.parse(data_infunc.data)
+      console.log(data2);
+
+      var elt = $('#mytags');
+      data2["def_labels"].forEach(function(element) {
+        elt.tagsinput('add', element);
+      });
+
+
+      console.log(elt.val());
+    })};
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dist/bootstrap-tagsinput.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dist/bootstrap-tagsinput-angular.min.js') }}"></script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/generic.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/html.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/javascript.js"></script>
+</body>
+</html>

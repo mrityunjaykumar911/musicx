@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html,body{
+background-image: url('275865-music-background-2880x1800-for-hd-1080p.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+height: 100%;
+font-family: 'Numans', sans-serif;
+}
+.OutBox{
+  height: 50%;
+  width: 50%;
+  align-content: center;
+  margin:auto;
+}
+.LoginBox{
+height: 370px;
+margin: auto;
+width: 100%;
+background-color: rgba(255,255,255,0.1) !important;
+
+}
+.LoginHeader{
+margin:auto;
+color: black;
+text-align: center;
+}
+input{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Extra style for the cancel button (red) */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+</style>
+</head>
+<body>
+<div class="OutBox">
+<div class="d-flex justify-content-center h-100">
+<div class="LoginBox">
+<div class="LoginHeader" style="float: left;">
+    <div style="margin: auto; width: 20%; float: left">
+        <img style="zoom: 80%;" src="{{url_for('static', filename='musicx.png')}}" alt="Brand"/> </div>
+    <div style="margin-top:12%; width: 80%; float: left;">
+        <span id="YmOt" style="font-size: 69px;">Your mood! Our Tunes!!
+        </span>
+    </div>
+</div>
+ <form name="login" method="post">
+    <div class="container">
+      <input type="text" placeholder="Enter Username" name="uname" required id="userid">
+      <input type="password" placeholder="Enter Password" name="psw" required id="pwd">
+
+      <button type="submit"  id="submit" class="tablink" onclick="check()">Login</button>
+    </div>
+  </form>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+function check()/*function to check userid & password*/
+{
+  var user = document.getElementById("userid").value;
+  var pass = document.getElementById("pwd").value;
+
+  if(user == "user" && pass == "user")
+  {
+    // alert("Opening User Page");
+     openPageUser();
+  }
+  else if(user == "admin" && pass == "admin"){
+    // alert("Opening admin page");
+     openPageAdmin();
+  }
+  else
+  {
+   alert("Error Password or Username")/*displays error message*/
+  }
+}
+function openPageAdmin() {
+    // window.location = window.location.origin+"/admin";
+
+    window.open(window.location.origin+"/admin", '_blank');
+}
+function openPageUser() {
+  window.open("/user.html","_alt");
+}
+</script>
+
+</body>
+</html>

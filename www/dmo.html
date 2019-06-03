@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<!-- Load d3.js -->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='dist/bootstrap-tagsinput.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='dist/bootstrap-tagsinput-angular.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/generic.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/html.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/javascript.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+
+<div style="float: left">
+    <div style="float: left" class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Emotions
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" id="emoMenu">
+    </ul>
+    </div>
+<div id="my_dataviz">
+</div>
+</div>
+
+
+<script>
+window.onload = function(e) {
+            console.log("window loaded");
+            init();
+        };
+
+$(document.body).on('click', '.dropdown-menu li a', function (e) {
+    var mood = $(this).text();
+    redraw(mood);
+});
+
+
+function reset_chart(){
+  var svg_ = d3.select("svg");
+  svg_.selectAll("*").remove();
+  d3.select("svg").remove();
+}
+
+
+    function init() {
+        var mood = "fast";
+        fill_moods();
+        redraw(mood);
+    }
+
+    function onDropDownChanged() {
+        // var skillsSelect = document.getElementById("emoMenu");
+        var e = document.getElementById("emoMenu");
+        var mood_changed = e.options[e.selectedIndex].value;
+        console.log(mood_changed);
+    }
+
+    function fill_moods() {
+      //   <li><a href="#">HTML</a></li>
+      // <li><a href="#">CSS</a></li>
+      // <li><a href="#">JavaScript</a></li>
+        var data2;
+    $.get("/get_all_moods", function(data_infunc) {
+        console.log(data_infunc);
+        data_infunc["data"].forEach(function (element) {
+            $("#emoMenu").append('<li><a href="#">'+element+'</a></li>');
+        });
+    });
+
+    }
+
+    function redraw(mood) {
+    reset_chart();
+
+        // set the dimensions and margins of the graph
+    var margin = {top: 30, right: 30, bottom: 30, left: 50},
+        width = 460 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+        var static_array2=[];
+        var static_array3 = []
+        var activity_array=[];
+        var mood_1 = '';
+        var mood_2 = '';
+
+        // add the x Axis
+
+      $.ajax({
+              url: "/get_kde_param_opp",
+              type: "POST",
+              contentType: "application/json", // send as JSON
+              data: JSON.stringify({'mood': mood}),
+
+              complete: function() {
+                //called when complete
+                console.log("complete");
+              },
+
+              success: function(data2, textStatus, jQxhr) {
+                //called when successful
+                  console.log(data2);
+
+
+
+                  data2.data.forEach(function(element) {
+                        activity_array.push(element[0]);
+                        static_array2.push(element[1]);
+                        static_array3.push(element[2]);
+                  });
+                  mood_1 = data2.mood_1;
+                  mood_2 = data2.mood_2;
+                    proceed();
+
+              },
+
+              error: function(jqXhr, textStatus, errorThrown) {
+                //called when there is an error
+                console.log(errorThrown);
+                console.log("error here");
+              }
+            });
+
+
+
+        function proceed() {
+              var x = d3.scaleLinear()
+                .domain([0, 150])
+                .range([0, width]);
+
+            // var x = d3.scaleBand();
+            //         x.domain(activity_array.map(function(d){ return d; }))
+            //         .range([0, width]);
+
+              svg.append("g")
+                  .attr("transform", "translate(0," + height + ")")
+                  .call(d3.axisBottom(x));
+
+              // add the y Axis
+              var y = d3.scaleLinear()
+                        .range([height, 0])
+                        .domain([0, 0.08]);
+              svg.append("g")
+                  .call(d3.axisLeft(y));
+
+              // Compute kernel density estimation
+              //var kde = kernelDensityEstimator(kernelEpanechnikov(9), x.ticks(40))
+              var kde = kernelDensityEstimator(kernelEpanechnikov(9), x.ticks(60))
+              var density =  kde( static_array2.map(function(d){  return d; }) )
+              var density2 =  kde(static_array3.map(function(d){  return d; }) )
+
+              // Plot the area
+              svg.append("path")
+                  .attr("class", "mypath")
+                  .datum(density)
+                  .transition()
+                  .duration(1000)
+                  .attr("fill", "#69b3a2")
+                  .attr("opacity", ".6")
+                  .attr("stroke", "#000")
+                  .attr("stroke-width", 1)
+                  .attr("stroke-linejoin", "round")
+                  .attr("d",  d3.line()
+                    .curve(d3.curveBasis)
+                      .x(function(d) { return x(d[0]); })
+                      .y(function(d) { return y(d[1]); })
+                  )
+
+              svg.append("path")
+                  .attr("class", "mypath")
+                  .datum(density2)
+                  .transition()
+                  .duration(1000)
+                  .attr("fill", "#404080")
+                  .attr("opacity", ".6")
+                  .attr("stroke", "#000")
+                  .attr("stroke-width", 1)
+                  .attr("stroke-linejoin", "round")
+                  .attr("d",  d3.line()
+                    .curve(d3.curveBasis)
+                      .x(function(d) { return x(d[0]); })
+                      .y(function(d) { return y(d[1]); })
+                  );
+              svg.append("circle").attr("cx",300).attr("cy",30).attr("r", 6).style("fill", "#69b3a2")
+              svg.append("circle").attr("cx",300).attr("cy",60).attr("r", 6).style("fill", "#404080")
+
+              svg.append("text").attr("x", 320).attr("y", 30).text(mood_1).style("font-size", "15px").attr("alignment-baseline","middle")
+              svg.append("text").attr("x", 320).attr("y", 60).text(mood_2).style("font-size", "15px").attr("alignment-baseline","middle")
+
+        }
+
+
+        // Function to compute density
+        function kernelDensityEstimator(kernel, X) {
+  return function(V) {
+    return X.map(function(x) {
+      return [x, d3.mean(V, function(v) { return kernel(x - v); })];
+    });
+  };
+}
+        function kernelEpanechnikov(k) {
+  return function(v) {
+    return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+  };
+}
+    }
+
+</script>
+
+</body>
+</html>
