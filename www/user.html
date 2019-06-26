@@ -298,6 +298,10 @@ line {
     function reset_chart() {
       var svg_ = d3.select("svg");
       svg_.selectAll("*").remove();
+
+      var yosvg = d3.select("#merasvg");
+      yosvg.select('.bubble').remove();
+
       d3.select("svg").remove();
     }
 
