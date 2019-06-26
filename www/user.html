@@ -1,33 +1,44 @@
 <!DOCTYPE html>
-<br>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='dist/bootstrap-tagsinput.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/themes/github.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="icon" type="image/png" sizes="192x192"  href="{{url_for('static', filename='favicon.ico')}}">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/dist/bootstrap-tagsinput.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/themes/github.css">
+  <link rel="icon" type="image/png" sizes="192x192" href="{{url_for('static', filename='favicon.ico')}}">
   <script>
-function logout()/*function to check userid & password*/
-{
-  window.open("/", "_top");
-}
-</script>
+    function logout()/*function to check userid & password*/ {
+      window.open("/", "_top");
+    }
+  </script>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-141293684-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141293684-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'UA-141293684-1');
-</script>
+    gtag('config', 'UA-141293684-1');
+  </script>
+  <style>
+    .label {
+      border: 1px solid #a2a2a2;
+      border-radius: 5px;
+      padding: 3px 5px;
+    }
 
+    .label-info {
+      background-color: #007bff;
+      border-color: #007bff;
+      font-weight: 200;
+      font-size: 0.8em;
+    }
+  </style>
+  <!--
 <style>
   #chartRound{
     font-family:sans-serif;
@@ -131,812 +142,823 @@ line {
 
 
 </style>
+-->
 
 </head>
 
+<body>
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="#">
+      <img src="../static/musicx.png" width="30" height="30" class="d-inline-block align-top" alt=""> MusicX
+    </a>
+    <form class="form-inline">
+      <button class="btn btn-sm btn-outline-danger" type="button" onclick="logout()">Logout</button>
+    </form>
+  </nav>
 
-<div class="tablist">
-<button class="tablink" onclick="logout()">Log Out</button>
-</div>
-
-<!--<div id="User" class="tabcontent">-->
-  <!--<h3>User</h3>-->
-  <!--<p>Get in touch, or swing by for a cup of coffee.</p>-->
-<!--</div>-->
-
-<div>
-<div style="float:left;">
-<br class="form-group">
-    <div>
-    <img style="zoom: 80%;" src="{{url_for('static', filename='musicx.png')}}" alt="Brand"/>
-    <span id="YmOt" style="">Your mood! Our Tunes!!
-    </span>
-    <div class="col-lg-10" style="margin-left: 17%;">
-      <label class="checkbox-inline">
-        <input type="checkbox" name="radio" checked="checked" id="rdroutine"> Daily routines
-      </label>
-      <label class="checkbox-inline">
-        <input type="checkbox" name="radio" checked="checked" id="remotional"> Emotional
-      </label>
-      <label class="checkbox-inline">
-        <input type="checkbox" name="radio" checked="checked" id="rentertain"> Entertainment
-      </label>
-      <label class="checkbox-inline">
-        <input type="checkbox" name="radio" id="rlmusic"> Live music
-      </label>
-        <label class="checkbox-inline">
-        <input type="checkbox" name="radio" id="rintellec"> Intellectual
-      </label>
-        <label class="checkbox-inline">
-        <input type="checkbox" name="radio" id="rmlisten"> Music listening
-      </label>
-    <label class="checkbox-inline">
-        <input type="checkbox" name="radio" id="ronTheMove"> On the move
-    </label>
-    <label class="checkbox-inline">
-        <input type="checkbox" name="radio" id="rphysical"> Physical
-    </label>
-        </label>
-        <label class="checkbox-inline">
-        <input type="checkbox" name="radio" id="rsocial"> Social
-      </label>
-    </div>
-    <hr />
-    </div>
-</div>
-</br>
-
-<script type="text/javascript" src="{{ url_for('static', filename='dist/jquery.min.js') }}"></script>
-<div class="container">
-  <section id="examples">
-       <div class="example example_markup">
-          <div class="bs-example">
-            <input type="text" id="mytags" value="" data-role="tagsinput" style="width: 100%"/>
-            <hr />
-            <input type="hidden" class="typeahead tt-query" autocomplete="off" spellcheck="false" style="width: 100%">
-
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-7 p-3">
+        <div class="alert alert-warning" id="WarningView"></div>
+        <div class="card text-center">
+          <div class="card-header">
+            Choose your Mood
           </div>
-       </div>
-  </section>
-</div>
+          <div class="card-body">
+            <div class="card-title mb-3 text-muted">
+              Based on the moods music is selected by the algorithms.
+            </div>
+            <div class="card-text">
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" name="radio" checked="checked" id="rdroutine" type="checkbox" />
+                <label class="form-check-label">Daily Routines</label>
+              </div>
 
-<div>
-  <div>
-<div id="merasvg" style="margin-left:12%; float:left">
-</div>
-<div>
-    <div style="float: left; margin-left:4%;">
-    <div style="float: right; width: 100%;">
-    <button class="buttonload" id="buttonSubmit" onclick="fill_music_data()">
-        <i class="fa"></i>Recommend
-    </button>
-        <div class="alert" id="WarningView"></div>
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="checkbox" name="radio" hecked="checked" id="remotional" />
+                <label class="form-check-label">Emotional</label>
+              </div>
+
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="checkbox" name="radio" checked="checked" id="rentertain" />
+                <label class="form-check-label">Entertainment</label>
+              </div>
+
+
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="checkbox" name="radio" id="rlmusic" />
+                <label class="form-check-label">Live music</label>
+              </div>
+
+
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="checkbox" name="radio" id="rintellec" />
+                <label class="form-check-label">Intellectual</label>
+              </div>
+
+
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="checkbox" name="radio" id="rmlisten" />
+                <label class="form-check-label">Music listening</label>
+              </div>
+
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="checkbox" name="radio" id="ronTheMove" />
+                <label class="form-check-label">On the move</label>
+              </div>
+
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="checkbox" name="radio" id="rphysical" />
+                <label class="form-check-label">Physical</label>
+              </div>
+
+              <div class="form-check form-check-inline mb-2">
+                <input class="form-check-input" type="checkbox" name="radio" id="rsocial" />
+                <label class="form-check-label">Social</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <input type="text" id="mytags" value="" data-role="tagsinput" class="form-control" />
+              <input type="hidden" class="typeahead tt-query w-100" autocomplete="off" spellcheck="false">
+            </div>
+
+            <button class="btn btn-sm btn-success mt-3" id="buttonSubmit" onclick="fill_music_data()">
+              <i class="fa"></i> Recommend
+            </button>
+          </div>
+        </div>
+        <div class="text-center">
+          <div id="merasvgreturns" class="text-center m-3 w-75"></div>
+          <div id="chartRound" class="text-center m-3 w-75"></div>
+        </div>
+        <div class="card mt-5">
+          <div class="card-body">
+            <div class="card-title">
+              Bibliographic Information
+            </div>
+            <div class="card-text">
+              <p>Dataset Source Citation: <a href="http://reshare.ukdataservice.ac.uk/852024/">Source link</a>
+                <p>
+                  <p>Paper : <a href="https://ieeexplore.ieee.org/document/7173419"> IEEE Link </a></p>
+                  <article>
+                    @article{1803.10260, Author = {P. Saari, G. Fazekas, T. Eerola, M. Barthet, O. Lartillot, and M.
+                    Sandler},</br>
+                    Title = {Genre-Adaptive Semantic Computing and Audio-Based Modelling for Music Mood
+                    Annotation},</br>
+                    Year = {2016}, IEEE Transactions on Affective Computing, vol. 7, no. 2, pp. 122–135, 2016
+                  </article>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-5 p-3">
+        <div class="card">
+          <div class="card-body">
+            <p> Songs recommended :</p>
+            <div id="ViewPlayer">
+              <ul class="list-group" id="MusicPlayListView">
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body text-center">
+              <div id="merasvg" class="m3 w-75"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    </br>
-    <p> Songs recommended :</p>
-    <div id="ViewPlayer">
-        <ul class="list-group" id="MusicPlayListView">
-        </ul>
-    </div>
-</br>
-</div>
-</div>
-</div>
-</div>
-</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='dist/bootstrap-tagsinput.min.js') }}"></script>
+  <script type="text/javascript"
+    src="{{ url_for('static', filename='dist/bootstrap-tagsinput-angular.min.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/generic.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/html.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/javascript.js"></script>
+  <script src="//d3js.org/d3.v4.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='dist/radical.js') }}"></script>
 
-<div style="text-align: center">
-<div style="float: left; width: 100%; height:auto; display: inline-block; margin:auto; " id="merasvgreturns">
-</div>
-</div>
-
-<!--<hr style="opacity: 0%;"/>-->
-<div style="text-align: center; margin-top: 50%;">
-<div id="chartRound" style="float: left; width: 100%; height:auto; display: inline-block; margin:auto;">
-</div>
-</div>
-
-<!--<hr style="opacity: 0%;"/>-->
-<p>
-<div style="text-align: center; margin-top: 50%;">
-<div style="float: left; width: 100%; height:auto; display: inline-block; margin:auto; ">
-<br id="citeDiv" style="padding-left: 50px;float: left;">
-    Bibliographic Information</br></br>
-    Dataset Source Citation: <a href="http://reshare.ukdataservice.ac.uk/852024/">Source link</a><br>
-    Paper : <a href="https://ieeexplore.ieee.org/document/7173419"> IEEE Link </a></br>
-    <cite>
-    &nbsp;&nbsp;@article{1803.10260, Author = {P. Saari, G. Fazekas, T. Eerola, M. Barthet, O. Lartillot, and M. Sandler},</br>
-    &nbsp;&nbsp;&nbsp;&nbsp;Title = {Genre-Adaptive Semantic Computing and Audio-Based Modelling for Music Mood Annotation},</br>
-    &nbsp;&nbsp;&nbsp;&nbsp;Year = {2016}, IEEE Transactions on Affective Computing, vol. 7, no. 2, pp. 122–135, 2016
-    </cite>
-</div>
-</div>
-</p>
-<script src="//d3js.org/d3.v4.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='dist/radical.js') }}"></script>
-
-<script>
-function reset_chart(){
-  var svg_ = d3.select("svg");
-  svg_.selectAll("*").remove();
-  d3.select("svg").remove();
-}
-
-function MakeCheck(idInput) {
-    document.getElementById(idInput).checked = true;
-}
-
-function MakeUncheck(idInput) {
-    document.getElementById(idInput).checked = false;
-}
-
-function update(dataset) {
-        reset_chart();
-        var diameter = 500;
-        var color = d3.scaleOrdinal(d3.schemeCategory20);
-
-        var bubble = d3.pack(dataset)
-            .size([diameter, diameter])
-            .padding(1.5);
-
-        var svg = d3.select("#merasvg")
-            .append("svg")
-            .attr("width", diameter)
-            .attr("height", diameter)
-            .attr("class", "bubble");
-
-        var nodes = d3.hierarchy(dataset)
-            .sum(function(d) { return d.Count; });
-
-        var node = svg.selectAll(".node")
-            .data(bubble(nodes).descendants())
-            .enter()
-            .filter(function(d){
-                return  !d.children
-            })
-            .append("g")
-            .attr("class", "node")
-            .attr("transform", function(d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            });
-
-        node.append("title")
-            .text(function(d) {
-                return d.Name;
-            });
-
-        node.append("circle")
-            .attr("r", function(d) {
-                if(d.r < 30)
-                    return 40;
-                return d.r;
-            })
-            .on("click", function(d) {
-              console.log("on click get data" + d.data.Name);
-              var mood_toadd = d.data.Name;
-              var elt = $('#mytags');
-              elt.tagsinput('add', mood_toadd);
-              fill_music_data();
-            })
-            .style("fill", function(d,i) {
-                return color(i);
-            })
-            .style("cursor", "cell");
-
-        node.append("text")
-            .attr("dy", ".2em")
-            .style("text-anchor", "middle")
-            .text(function(d) {
-                return d.data.Name.substring(0, d.r / 3);
-            })
-            .on("click", function(d) {
-              console.log("on click get data" + d.data.Name);
-              var mood_toadd = d.data.Name;
-              var elt = $('#mytags');
-              elt.tagsinput('add', mood_toadd);
-              fill_music_data();
-            })
-            .attr("font-family", "sans-serif")
-            .attr("font-size", function(d){
-                return d.r/5;
-            })
-            .attr("fill", "white")
-            .style("cursor", "cell");
-
-        node.append("text")
-            .attr("dy", "1.3em")
-            .style("text-anchor", "middle")
-            .attr("font-family",  "Gill Sans", "Gill Sans MT")
-            .attr("font-size", function(d){
-                return d.r/5;
-            })
-            .attr("fill", "white");
-
-        d3.select(self.frameElement)
-            .style("height", diameter + "px");
-}
-</script>
-
-<script>
-
-function get_checked_activity_list() {
-    var returnlist=[];
-    if(document.getElementById("rdroutine").checked){
-        returnlist.push("daily_routines");
+  <script>
+    function reset_chart() {
+      var svg_ = d3.select("svg");
+      svg_.selectAll("*").remove();
+      d3.select("svg").remove();
     }
-    if(document.getElementById("remotional").checked){
-        returnlist.push("emotional");
-    }
-    if(document.getElementById("rentertain").checked){
-        returnlist.push("entertainment");
-    }
-    if(document.getElementById("rlmusic").checked){
-        returnlist.push("live_music");
-    }
-    if(document.getElementById("rintellec").checked){
-        returnlist.push("intellectual");
-    }
-    if(document.getElementById("rmlisten").checked){
-        returnlist.push("music_listening");
-    }
-    if(document.getElementById("ronTheMove").checked){
-        returnlist.push("on_the_move");
-    }
-    if(document.getElementById("rphysical").checked){
-        returnlist.push("physical");
-    }
-    if(document.getElementById("rsocial").checked){
-        returnlist.push("social");
-    }
-    return returnlist;
-}
 
-function make_unchecked_activity_list() {
-    var returnlist=["rdroutine","remotional","rentertain","rlmusic",
-                    "rintellec","rmlisten","ronTheMove","rphysical","rsocial"];
+    function MakeCheck(idInput) {
+      document.getElementById(idInput).checked = true;
+    }
 
-    returnlist.forEach(function(element) {
-        MakeUncheck(element);
-    });
-}
+    function MakeUncheck(idInput) {
+      document.getElementById(idInput).checked = false;
+    }
 
-function arrayRemove(arr, value) {
-        return arr.filter(function(ele){
-            return ele != value;
+    function update(dataset) {
+      reset_chart();
+      var diameter = 500;
+      var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+      var bubble = d3.pack(dataset)
+        .size([diameter, diameter])
+        .padding(1.5);
+
+      var svg = d3.select("#merasvg")
+        .append("svg")
+        .attr("width", diameter)
+        .attr("height", diameter)
+        .attr("class", "bubble");
+
+      var nodes = d3.hierarchy(dataset)
+        .sum(function (d) { return d.Count; });
+
+      var node = svg.selectAll(".node")
+        .data(bubble(nodes).descendants())
+        .enter()
+        .filter(function (d) {
+          return !d.children
+        })
+        .append("g")
+        .attr("class", "node")
+        .attr("transform", function (d) {
+          return "translate(" + d.x + "," + d.y + ")";
         });
-}
 
-$('input').on('beforeItemAdd', function(event) {
-    console.log('item added : '+event.item);
-  // event.item: contains the item
-  // event.cancel: set to true to prevent the item getting added
-});
+      node.append("title")
+        .text(function (d) {
+          return d.Name;
+        });
 
-$("#mytags").on('itemAdded', function(event) {
-  console.log('item added : '+event.item);
-});
+      node.append("circle")
+        .attr("r", function (d) {
+          if (d.r < 30)
+            return 40;
+          return d.r;
+        })
+        .on("click", function (d) {
+          console.log("on click get data" + d.data.Name);
+          var mood_toadd = d.data.Name;
+          var elt = $('#mytags');
+          elt.tagsinput('add', mood_toadd);
+          fill_music_data();
+        })
+        .style("fill", function (d, i) {
+          return color(i);
+        })
+        .style("cursor", "cell");
 
-$("#mytags").on('itemRemoved', function(event) {
-  console.log('item removed : '+event.item);
-});
+      node.append("text")
+        .attr("dy", ".2em")
+        .style("text-anchor", "middle")
+        .text(function (d) {
+          return d.data.Name.substring(0, d.r / 3);
+        })
+        .on("click", function (d) {
+          console.log("on click get data" + d.data.Name);
+          var mood_toadd = d.data.Name;
+          var elt = $('#mytags');
+          elt.tagsinput('add', mood_toadd);
+          fill_music_data();
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", function (d) {
+          return d.r / 5;
+        })
+        .attr("fill", "white")
+        .style("cursor", "cell");
 
-function disableDivWarn() {
-  var x = document.getElementById("WarningView");
-  x.style.display = "none";
-}
-function enableDivWarn() {
-  $("#WarningView").show();
-}
+      node.append("text")
+        .attr("dy", "1.3em")
+        .style("text-anchor", "middle")
+        .attr("font-family", "Gill Sans", "Gill Sans MT")
+        .attr("font-size", function (d) {
+          return d.r / 5;
+        })
+        .attr("fill", "white");
 
-function make_bounded_force_directed(links_vals,links_nodes) {
-  var width = 1000,
-      height = 1000,
-      radius = 6;
-  var fill = d3.scaleOrdinal(d3.schemeCategory20);
-  var simulation = d3.forceSimulation()
-      .velocityDecay(0.1)
-      .force("x", d3.forceX(width / 2).strength(3))
-      .force("y", d3.forceY(height / 2).strength(3))
-      .force("charge", d3.forceManyBody().strength(-240))
-      .force("link", d3.forceLink().distance(10).strength(1));
+      d3.select(self.frameElement)
+        .style("height", diameter + "px");
+    }
+  </script>
 
-  var check = d3.select("#merasvgreturns").select("svg");
-  if(check.empty()){
-  var svg = d3.select("#merasvgreturns")
-              .append("svg")
-              .attr("width", width)
-              .attr("height", height)
-              .attr("class","fdgraph")
-              .style("margin","auto");}
-  else {
-    var svg = d3.select("#merasvgreturns").select("svg");
-    svg.selectAll("*").remove();
-  }
-  var link = svg.selectAll("line")
-                .data(links_vals)
-                .enter().append("line");
-  var node = svg.selectAll("circle")
-                .data(links_nodes)
-                .enter().append("circle")
-                .attr("r", radius - .75)
-                .style("fill", function(d) { return fill(d.group); })
-                .style("stroke", function(d) { return d3.rgb(fill(d.group)).darker(); })
-                .style("cursor","progress")
-                .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended))
-                .on("mouseover", handleMouseOver)
-                .on("mouseout", handleMouseOut);
-  simulation.nodes(links_nodes)
-            .on("tick", tick);
-  simulation.force('link')
-            .links(links_vals);
-  function tick() {
-    node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
-    link.attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
-  }
-  function dragstarted(d) {
-    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-  }
-  function dragged(d) {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
-  }
-  function dragended(d) {
-    if (!d3.event.active) simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-  }
-  function handleMouseOver(d,i){
-    //console.log("mouse over called"+[d.name].length);
-    g1 = svg.append("g")
-           .attr("id", "text");  // Create an id for text so we can select it later for removing on mouseout;
-    g2 = svg.append("g")
-                  .attr("id", "text");  // Create an id for text so we can select it later for removing on mouseout;
-    g1.append('rect')
-        .attr('x', function() { return d.x - 30; } )
-        .attr('y', function() { return d.y - 28; } )
-        .attr('width', 200 )
-        .attr('height', 20)
-        .style('fill', '#FFFFFF');
-    g2.append("text")
-     .attr("x", function() { return d.x - 30; })
-     .attr("y", function() { return d.y - 15; })
-     .attr('stroke', 'black')
-     .attr('stroke-width', 1)
-     .text(function() {
+  <script>
+
+    function get_checked_activity_list() {
+      var returnlist = [];
+      if (document.getElementById("rdroutine").checked) {
+        returnlist.push("daily_routines");
+      }
+      if (document.getElementById("remotional").checked) {
+        returnlist.push("emotional");
+      }
+      if (document.getElementById("rentertain").checked) {
+        returnlist.push("entertainment");
+      }
+      if (document.getElementById("rlmusic").checked) {
+        returnlist.push("live_music");
+      }
+      if (document.getElementById("rintellec").checked) {
+        returnlist.push("intellectual");
+      }
+      if (document.getElementById("rmlisten").checked) {
+        returnlist.push("music_listening");
+      }
+      if (document.getElementById("ronTheMove").checked) {
+        returnlist.push("on_the_move");
+      }
+      if (document.getElementById("rphysical").checked) {
+        returnlist.push("physical");
+      }
+      if (document.getElementById("rsocial").checked) {
+        returnlist.push("social");
+      }
+      return returnlist;
+    }
+
+    function make_unchecked_activity_list() {
+      var returnlist = ["rdroutine", "remotional", "rentertain", "rlmusic",
+        "rintellec", "rmlisten", "ronTheMove", "rphysical", "rsocial"];
+
+      returnlist.forEach(function (element) {
+        MakeUncheck(element);
+      });
+    }
+
+    function arrayRemove(arr, value) {
+      return arr.filter(function (ele) {
+        return ele != value;
+      });
+    }
+
+    $('input').on('beforeItemAdd', function (event) {
+      console.log('item added : ' + event.item);
+      // event.item: contains the item
+      // event.cancel: set to true to prevent the item getting added
+    });
+
+    $("#mytags").on('itemAdded', function (event) {
+      console.log('item added : ' + event.item);
+    });
+
+    $("#mytags").on('itemRemoved', function (event) {
+      console.log('item removed : ' + event.item);
+    });
+
+    function disableDivWarn() {
+      var x = document.getElementById("WarningView");
+      x.style.display = "none";
+    }
+    function enableDivWarn() {
+      $("#WarningView").show();
+    }
+
+    function make_bounded_force_directed(links_vals, links_nodes) {
+      var merasvgreturnsOffsets = document.getElementById('merasvgreturns');
+      var width = merasvgreturnsOffsets.offsetWidth,
+        height = merasvgreturnsOffsets.offsetWidth,
+        radius = 6;
+      var fill = d3.scaleOrdinal(d3.schemeCategory20);
+      var simulation = d3.forceSimulation()
+        .velocityDecay(0.1)
+        .force("x", d3.forceX(width / 2).strength(3))
+        .force("y", d3.forceY(height / 2).strength(3))
+        .force("charge", d3.forceManyBody().strength(-240))
+        .force("link", d3.forceLink().distance(10).strength(1));
+
+      var check = d3.select("#merasvgreturns").select("svg");
+      if (check.empty()) {
+        var svg = d3.select("#merasvgreturns")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("class", "fdgraph")
+          .style("margin", "auto");
+      }
+      else {
+        var svg = d3.select("#merasvgreturns").select("svg");
+        svg.selectAll("*").remove();
+      }
+      var link = svg.selectAll("line")
+        .data(links_vals)
+        .enter().append("line");
+      var node = svg.selectAll("circle")
+        .data(links_nodes)
+        .enter().append("circle")
+        .attr("r", radius - .75)
+        .style("fill", function (d) { return fill(d.group); })
+        .style("stroke", function (d) { return d3.rgb(fill(d.group)).darker(); })
+        .style("cursor", "progress")
+        .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended))
+        .on("mouseover", handleMouseOver)
+        .on("mouseout", handleMouseOut);
+      simulation.nodes(links_nodes)
+        .on("tick", tick);
+      simulation.force('link')
+        .links(links_vals);
+      function tick() {
+        node.attr("cx", function (d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+          .attr("cy", function (d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+        link.attr("x1", function (d) { return d.source.x; })
+          .attr("y1", function (d) { return d.source.y; })
+          .attr("x2", function (d) { return d.target.x; })
+          .attr("y2", function (d) { return d.target.y; });
+      }
+      function dragstarted(d) {
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+      function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+      }
+      function dragended(d) {
+        if (!d3.event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      }
+      function handleMouseOver(d, i) {
+        //console.log("mouse over called"+[d.name].length);
+        g1 = svg.append("g")
+          .attr("id", "text");  // Create an id for text so we can select it later for removing on mouseout;
+        g2 = svg.append("g")
+          .attr("id", "text");  // Create an id for text so we can select it later for removing on mouseout;
+        g1.append('rect')
+          .attr('x', function () { return d.x - 30; })
+          .attr('y', function () { return d.y - 28; })
+          .attr('width', 200)
+          .attr('height', 20)
+          .style('fill', '#FFFFFF');
+        g2.append("text")
+          .attr("x", function () { return d.x - 30; })
+          .attr("y", function () { return d.y - 15; })
+          .attr('stroke', 'black')
+          .attr('stroke-width', 1)
+          .text(function () {
             return [d.name];  // Value of the text
           });
-  }
-  function handleMouseOut(d, i) {
-    // console.log("mouse out called");
-    // Select text by id and then remove
-    d3.selectAll("#text").remove();  // Remove text location
-  }
-}
+      }
+      function handleMouseOut(d, i) {
+        // console.log("mouse out called");
+        // Select text by id and then remove
+        d3.selectAll("#text").remove();  // Remove text location
+      }
+    }
 
-function fill_music_data()
-{
-  var btnview = $("#buttonSubmit");
-  btnview.empty();
-  $("#LoadedRec").empty();
-  btnview.append('<i class="fa fa-refresh fa-spin"></i>  Loading');
+    function fill_music_data() {
+      var btnview = $("#buttonSubmit");
+      btnview.empty();
+      $("#LoadedRec").empty();
+      btnview.append('<i class="fa fa-refresh fa-spin"></i>  Loading');
 
-  var plyrView = $("#MusicPlayListView");
-  var elt = $('#mytags');;
-  // empty the player view
-  plyrView.empty();
-  var mood_list_array = elt.val().split(",");
-  var activity_list_array = get_checked_activity_list();
+      var plyrView = $("#MusicPlayListView");
+      var elt = $('#mytags');;
+      // empty the player view
+      plyrView.empty();
+      var mood_list_array = elt.val().split(",");
+      var activity_list_array = get_checked_activity_list();
 
-  if((mood_list_array[0].length == 0) || (activity_list_array.length == 0)) {
-    $('#WarningView').empty();
-    enableDivWarn();
-    $('#WarningView').append('<span class="closebtn" onclick="disableDivWarn();">&times;</span>');
-    $('#WarningView').append("<strong>Warning!</strong> Min One entry in moods and activity both are req.");
-    btnview.empty();
-    btnview.append('<i class="fa"></i>Recommend');
-    return;
-  }
+      if ((mood_list_array[0].length == 0) || (activity_list_array.length == 0)) {
+        $('#WarningView').empty();
+        enableDivWarn();
+        $('#WarningView').append('<span class="closebtn" onclick="disableDivWarn();">&times;</span>');
+        $('#WarningView').append("<strong>Warning!</strong> Min One entry in moods and activity both are req.");
+        btnview.empty();
+        btnview.append('<i class="fa"></i>Recommend');
+        return;
+      }
 
-  $.ajax({
-          url: "/query/20",
-          type: "POST",
-          contentType: "application/json", // send as JSON
-          data: JSON.stringify({'mood_list': mood_list_array, "activity_list": activity_list_array}),
+      $.ajax({
+        url: "/query/20",
+        type: "POST",
+        contentType: "application/json", // send as JSON
+        data: JSON.stringify({ 'mood_list': mood_list_array, "activity_list": activity_list_array }),
 
-          complete: function() {
-            //called when complete
-            console.log("complete");
-            btnview.empty();
-            btnview.append('<i class="fa"></i>Recommend');
-          },
+        complete: function () {
+          //called when complete
+          console.log("complete");
+          btnview.empty();
+          btnview.append('<i class="fa"></i>Recommend');
+        },
 
-          success: function(data, textStatus, jQxhr) {
-            //called when successful
+        success: function (data, textStatus, jQxhr) {
+          //called when successful
 
-            data.result.forEach(function(element) {
-              var artist_name = element.artistname;
-              var track_title = element.tracktitle;
+          data.result.forEach(function (element) {
+            var artist_name = element.artistname;
+            var track_title = element.tracktitle;
 
-              if(element.hasOwnProperty('spotify')){
+            if (element.hasOwnProperty('spotify')) {
               var spotify_album = element.spotify.external_urls.spotify;
               $("#MusicPlayListView").append('<li class="list-group-item row">\
-                                            <iframe src='+spotify_album+'\
+                                            <iframe src='+ spotify_album + '\
                                             width="550px" height="80" frameborder="0" data-mce-fragment="1"></iframe>\
                                              </li>');
-                }else {
-                  console.log("error");
-                  // $("#MusicPlayListView").append('<li class="list-group-item row">\
-                  //                               <div class="col-md-3">'+track_title+'</div>\
-                  //                               <div class="col-md-9">'+'Artist :'+artist_name+'</div>\
-                  //                             </li>');
-                }
-              });
-              btnview.empty();
-              btnview.append('<i class="fa"></i>Recommend');
-              // $("#LoadedRec").append("<p> Songs recommended :</p>");
+            } else {
+              console.log("error");
+              // $("#MusicPlayListView").append('<li class="list-group-item row">\
+              //                               <div class="col-md-3">'+track_title+'</div>\
+              //                               <div class="col-md-9">'+'Artist :'+artist_name+'</div>\
+              //                             </li>');
+            }
+          });
+          btnview.empty();
+          btnview.append('<i class="fa"></i>Recommend');
+          // $("#LoadedRec").append("<p> Songs recommended :</p>");
+        },
+
+        error: function (jqXhr, textStatus, errorThrown) {
+          //called when there is an error
+          console.log(errorThrown);
+          console.log("error here");
+        },
+      });
+
+      $.ajax({
+        url: "/cquery",
+        type: "POST",
+        contentType: "application/json", // send as JSON
+        data: JSON.stringify({ "mood_list": mood_list_array, "activity_list": activity_list_array }),
+
+        complete: function () {
+          //called when complete
+          console.log("complete");
+        },
+
+        success: function (data, textStatus, jQxhr) {
+          //called when successful
+          var links_vals = data.result.links;
+          var links_nodes = data.result.nodes;
+          console.log("Query success");
+          //console.log(links_vals);
+          //console.log(links_nodes);
+          make_bounded_force_directed(links_vals, links_nodes);
+        },
+
+        error: function (jqXhr, textStatus, errorThrown) {
+          //called when there is an error
+          console.log(errorThrown);
+          console.log("error here");
+        },
+      });
+      init_draw_chart();
+    }
+
+    $(document).ready(function () {
+      var elt = $('#mytags');
+      disableDivWarn();
+
+      elt.tagsinput({
+        typeahead: {
+          source: []
+        }
+      });
+
+      $("#mytags").on('itemAdded', function (event) {
+        console.log('item added : ' + event.item);
+        var elt = $('#mytags');
+        var items = elt.val().split(",");
+        var values = get_checked_activity_list();
+        //console.log(values);
+
+        if (items.length == 0) {
+          console.log("empty moods");
+          return;
+        }
+
+
+        $.ajax({
+          url: "/get_similar_moods/10",
+          type: "POST",
+          contentType: "application/json", // send as JSON
+          data: JSON.stringify({ 'moods': items }),
+
+          complete: function () {
+            //called when complete
+            console.log("complete");
           },
 
-          error: function(jqXhr, textStatus, errorThrown) {
+          success: function (data, textStatus, jQxhr) {
+            //called when successful
+            dataset = { "children": [] };
+            var data2 = data.data;
+            data.data.forEach(function (element) {
+              //console.log(element);
+              dataset["children"].push({
+                "Name": element[0],
+                "Count": element[1]
+              })
+            });
+            //console.log(dataset);
+            update(dataset);
+          },
+
+          error: function (jqXhr, textStatus, errorThrown) {
             //called when there is an error
             console.log(errorThrown);
             console.log("error here");
           },
         });
 
+      });
+
+      $("#mytags").on('itemRemoved', function (event) {
+        console.log('item removed : ' + event.item);
+        var elt = $('#mytags');
+        var items = elt.val().split(",");
+        if (items[0].length == 0) {
+          dataset = { "children": [{ "Name": "No Input for Mood", "Count": 1 }] };
+          update(dataset);
+        }
+        if (items[0].length == 0) {
+          console.log("empty moods");
+          return;
+        }
+
+        var values = get_checked_activity_list();
+        console.log(values);
+
+
         $.ajax({
-                url: "/cquery",
-                type: "POST",
-                contentType: "application/json", // send as JSON
-                data: JSON.stringify({"mood_list" : mood_list_array,"activity_list" : activity_list_array}),
+          url: "/get_similar_moods/10",
+          type: "POST",
+          contentType: "application/json", // send as JSON
+          data: JSON.stringify({ 'moods': items }),
 
-                complete: function() {
-                  //called when complete
-                  console.log("complete");
-                },
+          complete: function () {
+            //called when complete
+            console.log("complete");
+          },
 
-                success: function(data, textStatus, jQxhr) {
-                  //called when successful
-                  var links_vals = data.result.links;
-                  var links_nodes = data.result.nodes;
-                  console.log("Query success");
-                  //console.log(links_vals);
-                  //console.log(links_nodes);
-                  make_bounded_force_directed(links_vals,links_nodes);
-                },
+          success: function (data, textStatus, jQxhr) {
+            //called when successful
+            var data2 = data.data;
+            dataset = { "children": [] };
+            data.data.forEach(function (element) {
+              console.log(element);
+              dataset["children"].push({
+                "Name": element[0],
+                "Count": element[1]
+              })
+            });
+            console.log(dataset);
+            update(dataset);
+          },
 
-                error: function(jqXhr, textStatus, errorThrown) {
-                  //called when there is an error
-                  console.log(errorThrown);
-                  console.log("error here");
-                },
-              });
-        init_draw_chart();
-}
-
-$(document).ready(function(){
-  var elt = $('#mytags');
-  disableDivWarn();
-
-  elt.tagsinput({
-    typeahead: {
-      source: []
-    }
-  });
-
-  $("#mytags").on('itemAdded', function(event) {
-    console.log('item added : '+event.item);
-    var elt = $('#mytags');
-    var items = elt.val().split(",");
-    var values = get_checked_activity_list();
-    //console.log(values);
-
-    if(items.length == 0)
-    {
-      console.log("empty moods");
-      return;
-    }
-
-
-    $.ajax({
-            url: "/get_similar_moods/10",
-            type: "POST",
-            contentType: "application/json", // send as JSON
-            data: JSON.stringify({'moods': items}),
-
-            complete: function() {
-              //called when complete
-              console.log("complete");
-            },
-
-            success: function(data, textStatus, jQxhr) {
-              //called when successful
-              dataset = {"children" : []};
-              var data2 = data.data;
-              data.data.forEach(function(element) {
-                //console.log(element);
-                dataset["children"].push({"Name":element[0],
-                                        "Count": element[1]})});
-              //console.log(dataset);
-              update(dataset);
-            },
-
-            error: function(jqXhr, textStatus, errorThrown) {
-              //called when there is an error
-              console.log(errorThrown);
-              console.log("error here");
-            },
-          });
-
-  });
-
-  $("#mytags").on('itemRemoved', function(event) {
-    console.log('item removed : '+event.item);
-    var elt = $('#mytags');
-    var items = elt.val().split(",");
-    if(items[0].length == 0){
-        dataset = {"children": [{"Name":"No Input for Mood","Count":1}]};
-        update(dataset);
-    }
-    if(items[0].length == 0)
-    {
-      console.log("empty moods");
-      return;
-    }
-
-    var values = get_checked_activity_list();
-    console.log(values);
-
-
-    $.ajax({
-            url: "/get_similar_moods/10",
-            type: "POST",
-            contentType: "application/json", // send as JSON
-            data: JSON.stringify({'moods': items}),
-
-            complete: function() {
-              //called when complete
-              console.log("complete");
-            },
-
-            success: function(data, textStatus, jQxhr) {
-              //called when successful
-              var data2 = data.data;
-              dataset = {"children" : []};
-              data.data.forEach(function(element) {
-                console.log(element);
-                dataset["children"].push({"Name":element[0],
-                                        "Count": element[1]})});
-              console.log(dataset);
-              update(dataset);
-            },
-
-            error: function(jqXhr, textStatus, errorThrown) {
-              //called when there is an error
-              console.log(errorThrown);
-              console.log("error here");
-            },
-          });
+          error: function (jqXhr, textStatus, errorThrown) {
+            //called when there is an error
+            console.log(errorThrown);
+            console.log("error here");
+          },
+        });
 
 
 
-  });
-});
-
-  window.onload = function(e) {
-                console.log("window loaded");
-                fill_data();
-                dataset = {
-                "children": [{"Name":"Sad","Count":4319},
-                    {"Name":"Happy","Count":4159},
-                    {"Name":"Joy Potatoes","Count":2583},
-                    {"Name":"On the Road","Count":2074},
-                    {"Name":"Sex","Count":1894},
-                    {"Name":"Relax","Count":1809},
-                    {"Name":"Sleep","Count":1713}]
-                };
-                update(dataset);
-            };
-  function fill_data() {
-    var data2;
-    $.get("/get_default_moods", {'data': 'received'}, function(data_infunc){
-      data2 = JSON.parse(data_infunc.data)
-      console.log(data2);
-
-      make_unchecked_activity_list();
-
-      data2["def_activities"].forEach(function(element) {
-            MakeCheck(element);
       });
+    });
 
-      var elt = $('#mytags');
-      data2["def_labels"].forEach(function(element) {
-        elt.tagsinput('add', element);
-      });
+    window.onload = function (e) {
+      console.log("window loaded");
+      fill_data();
+      dataset = {
+        "children": [{ "Name": "Sad", "Count": 4319 },
+        { "Name": "Happy", "Count": 4159 },
+        { "Name": "Joy Potatoes", "Count": 2583 },
+        { "Name": "On the Road", "Count": 2074 },
+        { "Name": "Sex", "Count": 1894 },
+        { "Name": "Relax", "Count": 1809 },
+        { "Name": "Sleep", "Count": 1713 }]
+      };
+      update(dataset);
+    };
+    function fill_data() {
+      var data2;
+      $.get("/get_default_moods", { 'data': 'received' }, function (data_infunc) {
+        data2 = JSON.parse(data_infunc.data)
+        console.log(data2);
+
+        make_unchecked_activity_list();
+
+        data2["def_activities"].forEach(function (element) {
+          MakeCheck(element);
+        });
+
+        var elt = $('#mytags');
+        data2["def_labels"].forEach(function (element) {
+          elt.tagsinput('add', element);
+        });
 
 
-      console.log(elt.val());
-    })};
-</script>
+        console.log(elt.val());
+      })
+    };
+  </script>
 
-<script>
-    function init_draw_chart(){
+  <script>
+    function init_draw_chart() {
       d3.select("#chartRound").select("svg").remove();
-        diameter = 700;
-        var svg = d3.select("#chartRound")
-                .append("svg")
-                .attr("width", diameter+100)
-                .attr("height", diameter);
+      diameter = document.getElementById('chartRound').offsetWidth;
+      var svg = d3.select("#chartRound")
+        .append("svg")
+        .attr("width", diameter + 100)
+        .attr("height", diameter);
 
-        width = svg.attr("width"),
+      width = svg.attr("width"),
         height = svg.attr("height"),
-        margin = {top: 40, right: 80, bottom: 40, left: 40},
+        margin = { top: 40, right: 80, bottom: 40, left: 40 },
         innerRadius = 20,
         chartWidth = width - margin.left - margin.right,
-        chartHeight= height - margin.top - margin.bottom,
+        chartHeight = height - margin.top - margin.bottom,
         outerRadius = (Math.min(chartWidth, chartHeight) / 2),
         g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-    var angle = d3.scaleLinear()
+      var angle = d3.scaleLinear()
         .range([0, 2 * Math.PI]);
 
-    var radius = d3.scaleLinear()
+      var radius = d3.scaleLinear()
         .range([innerRadius, outerRadius]);
 
-    var x = d3.scaleBand()
+      var x = d3.scaleBand()
         .range([0, 2 * Math.PI])
         .align(0);
 
-    var y = d3.scaleLinear() //you can try scaleRadial but it scales differently
+      var y = d3.scaleLinear() //you can try scaleRadial but it scales differently
         .range([innerRadius, outerRadius]);
 
-    var z = d3.scaleOrdinal()
+      var z = d3.scaleOrdinal()
         .range(["#4242f4", "#42c5f4", "#42f4ce", "#42f456", "#adf442", "#f4e242", "#f4a142", "#f44242"]);
-    var data2=new Object();
-    data2.data = "";
-    data2.columns = "";
-    var elt = $('#mytags');
-    var mood_list_array = elt.val().split(",");
+      var data2 = new Object();
+      data2.data = "";
+      data2.columns = "";
+      var elt = $('#mytags');
+      var mood_list_array = elt.val().split(",");
 
-    $.ajax({
-                    url: "/get_rose_data2",
-                    type: "POST",
-                    contentType: "application/json", // send as JSON
-                    data: JSON.stringify({"moods" : mood_list_array}),
+      $.ajax({
+        url: "/get_rose_data2",
+        type: "POST",
+        contentType: "application/json", // send as JSON
+        data: JSON.stringify({ "moods": mood_list_array }),
 
-                    complete: function() {
-                      //called when complete
-                      console.log("complete");
-                    },
+        complete: function () {
+          //called when complete
+          console.log("complete");
+        },
 
-                    success: function(data, textStatus, jQxhr) {
-                      //called when successful
+        success: function (data, textStatus, jQxhr) {
+          //called when successful
 
-                      data2.values = data.data;
-                      data2.columns = data.acts;
-                      draw_chart(data2);
-                    },
+          data2.values = data.data;
+          data2.columns = data.acts;
+          draw_chart(data2);
+        },
 
-                    error: function(jqXhr, textStatus, errorThrown) {
-                      //called when there is an error
-                      console.log(errorThrown);
-                      console.log("error here");
-                    },
-    });
+        error: function (jqXhr, textStatus, errorThrown) {
+          //called when there is an error
+          console.log(errorThrown);
+          console.log("error here");
+        },
+      });
 
-    function draw_chart(data){
+      function draw_chart(data) {
         columns = data.columns;
         data = data.values;
 
-        x.domain(data.map(function(d) { return d.angle; }));
-        y.domain([0, d3.max(data, function(d) { return d.total; })]);
+        x.domain(data.map(function (d) { return d.angle; }));
+        y.domain([0, d3.max(data, function (d) { return d.total; })]);
         z.domain(columns.slice(1));
         // Extend the domain slightly to match the range of [0, 2π].
-        angle.domain([0, d3.max(data, function(d,i) { return i + 1; })]);
-        radius.domain([0, d3.max(data, function(d) { return d.y0 + d.y; })]);
-        angleOffset = -360.0/data.length/2.0;
+        angle.domain([0, d3.max(data, function (d, i) { return i + 1; })]);
+        radius.domain([0, d3.max(data, function (d) { return d.y0 + d.y; })]);
+        angleOffset = -360.0 / data.length / 2.0;
         g.append("g")
-            .selectAll("g")
-            .data(d3.stack().keys(columns.slice(1))(data))
-            .enter().append("g")
-            .attr("fill", function(d) { return z(d.key); })
-            .selectAll("path")
-            .data(function(d) { return d; })
-            .enter().append("path")
-            .attr("d", d3.arc()
-                .innerRadius(function(d) { return y(d[0]); })
-                .outerRadius(function(d) { return y(d[1]); })
-                .startAngle(function(d) { return x(d.data.angle); })
-                .endAngle(function(d) { return x(d.data.angle) + x.bandwidth(); })
-                .padAngle(0.01)
-                .padRadius(innerRadius))
-            .attr("transform", function() {return "rotate("+ angleOffset + ")"});
+          .selectAll("g")
+          .data(d3.stack().keys(columns.slice(1))(data))
+          .enter().append("g")
+          .attr("fill", function (d) { return z(d.key); })
+          .selectAll("path")
+          .data(function (d) { return d; })
+          .enter().append("path")
+          .attr("d", d3.arc()
+            .innerRadius(function (d) { return y(d[0]); })
+            .outerRadius(function (d) { return y(d[1]); })
+            .startAngle(function (d) { return x(d.data.angle); })
+            .endAngle(function (d) { return x(d.data.angle) + x.bandwidth(); })
+            .padAngle(0.01)
+            .padRadius(innerRadius))
+          .attr("transform", function () { return "rotate(" + angleOffset + ")" });
 
         var label = g.append("g")
-            .selectAll("g")
-            .data(data)
-            .enter().append("g")
-            .attr("text-anchor", "middle")
-            .attr("transform", function(d) { return "rotate(" + ((x(d.angle) + x.bandwidth() / 2) * 180 / Math.PI - (90-angleOffset)) + ")translate(" + (outerRadius+30) + ",0)"; });
+          .selectAll("g")
+          .data(data)
+          .enter().append("g")
+          .attr("text-anchor", "middle")
+          .attr("transform", function (d) { return "rotate(" + ((x(d.angle) + x.bandwidth() / 2) * 180 / Math.PI - (90 - angleOffset)) + ")translate(" + (outerRadius + 30) + ",0)"; });
 
         label.append("text")
-            .attr("transform", function(d) { return (x(d.angle) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI ? "rotate(90)translate(0,16)" : "rotate(-90)translate(0,-9)"; })
-            .text(function(d) { return d.angle; })
-            .style("font-size",14);
+          .attr("transform", function (d) { return (x(d.angle) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI ? "rotate(90)translate(0,16)" : "rotate(-90)translate(0,-9)"; })
+          .text(function (d) { return d.angle; })
+          .style("font-size", 14);
 
         g.selectAll(".axis")
-            .data(d3.range(angle.domain()[1]))
-            .enter().append("g")
-            .attr("class", "axis")
-            .attr("transform", function(d) { return "rotate(" + angle(d) * 180 / Math.PI + ")"; })
-            .call(d3.axisLeft()
-                .scale(radius.copy().range([-innerRadius, -(outerRadius+10)])));
+          .data(d3.range(angle.domain()[1]))
+          .enter().append("g")
+          .attr("class", "axis")
+          .attr("transform", function (d) { return "rotate(" + angle(d) * 180 / Math.PI + ")"; })
+          .call(d3.axisLeft()
+            .scale(radius.copy().range([-innerRadius, -(outerRadius + 10)])));
 
         var yAxis = g.append("g")
-            .attr("text-anchor", "middle");
+          .attr("text-anchor", "middle");
 
         var yTick = yAxis
-            .selectAll("g")
-            .data(y.ticks(5).slice(1))
-            .enter().append("g");
+          .selectAll("g")
+          .data(y.ticks(5).slice(1))
+          .enter().append("g");
 
         yTick.append("circle")
-            .attr("fill", "none")
-            .attr("stroke", "gray")
-            .attr("stroke-dasharray", "4,4")
-            .attr("r", y);
+          .attr("fill", "none")
+          .attr("stroke", "gray")
+          .attr("stroke-dasharray", "4,4")
+          .attr("r", y);
 
         yTick.append("text")
-            .attr("y", function(d) { return -y(d); })
-            .attr("dy", "-0.35em")
-            .attr("x", function() { return -10; })
-            .text(y.tickFormat(5, "s"))
-            .style("font-size",14);
+          .attr("y", function (d) { return -y(d); })
+          .attr("dy", "-0.35em")
+          .attr("x", function () { return -10; })
+          .text(y.tickFormat(5, "s"))
+          .style("font-size", 14);
 
 
         var legend = g.append("g")
-            .selectAll("g")
-            .data(columns.slice(1).reverse())
-            .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(" + (outerRadius-60) + "," + (-outerRadius + 40 +(i - (columns.length - 1) / 2) * 20) + ")"; });
+          .selectAll("g")
+          .data(columns.slice(1).reverse())
+          .enter().append("g")
+          .attr("transform", function (d, i) { return "translate(" + (outerRadius - 60) + "," + (-outerRadius + 40 + (i - (columns.length - 1) / 2) * 20) + ")"; });
 
         legend.append("rect")
-            .attr("width", 18)
-            .attr("height", 18)
-            .attr("fill", z);
+          .attr("width", 18)
+          .attr("height", 18)
+          .attr("fill", z);
 
         legend.append("text")
-            .attr("x", 24)
-            .attr("y", 9)
-            .attr("dy", "0.35em")
-            .text(function(d) { return d; })
-            .style("font-size",12);
-    };
+          .attr("x", 24)
+          .attr("y", 9)
+          .attr("dy", "0.35em")
+          .text(function (d) { return d; })
+          .style("font-size", 12);
+      };
     }
 
-</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='dist/bootstrap-tagsinput.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='dist/bootstrap-tagsinput-angular.min.js') }}"></script>
-
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/generic.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/html.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/javascript.js"></script>
+  </script>
 </body>
+
 </html>
