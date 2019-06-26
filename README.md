@@ -1,9 +1,10 @@
 ![Logo](https://sbu-musicx.herokuapp.com/static/musicx.png)
 
-# CSE-564 Visualization
+# MusicX
 
 Submitter : 
 - [Mrityunjay Kumar](mrkumar@cs.stonybrook.edu)
+- [Mayank Mishra](nitb.scholar@gmail.com)
 - [Prithaj Jana](jprithaj@cs.stonybrook.edu)
             
 
