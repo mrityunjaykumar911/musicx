@@ -624,7 +624,7 @@ def rose():
 	return render_template("rose.html")
 
 
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def default():
 	return render_template("index.html")
 
