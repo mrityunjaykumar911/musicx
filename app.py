@@ -1,11 +1,9 @@
 from __future__ import absolute_import
-import socket
 import json
 import os
 import numpy as np
 import pickle
 from tqdm import tqdm
-import sys
 import ast
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -20,7 +18,6 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import pairwise_distances
 from sklearn.manifold import MDS
-from logic import get_similar_moods_calc
 
 MY_STATIC_LIST = ["reflective", "pleasant", "powerful"]
 
