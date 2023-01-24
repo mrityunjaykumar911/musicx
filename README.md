@@ -1,5 +1,8 @@
 ![Logo](https://sbu-musicx.herokuapp.com/static/musicx.png)
 
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/zUcpux)
+
 # MusicX
 
 Submitter : 
